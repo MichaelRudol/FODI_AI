@@ -1,7 +1,7 @@
 # FODI_AI
 This is an fairly simple AI made from 3 files but it's also simple to use.
 
-##Usage
+## Usage
 Add the files to your project.
 
 To make a simple AI, you first need to create as many neurons as you want:
@@ -34,6 +34,21 @@ print("Result: \(result)")
 neuralNetwork.wasGood((10...50).contains(result.first!))
 ```
 
-***Note:** The network is capable of mcuh more complicated things. With a higher complexity, you may need more neuron groups and more neurons per group.*
+***Note:** The network is capable of much more complicated things. With a higher complexity, you may need more neuron groups and more neurons per group.*
 
 If you did it right, your network should learn the task. How many times you need it to learn the task depends on the task's complexity.
+
+There is no function to store the network, but since commit 2 you can use neuralNetwork.getData(), and neuralNetwork.updateNetworkWithData(_ data:). If
+ you store the [Float] you get from NeuralNetwork.getData() and later use it in updateNetworkWithData(), you'll have the same network again. Note that updateNetworkWithData() can only run with a network with the same shape (number of groups, neurons/group) as the original network did.
+
+ ## Initialize Neuron with more control
+ If you use the initializer instead of the static function (*Neuron.makeBasicNeuron()*), there are more options for you.
+
+```
+Neuron(graphCalculator: ((Float) -> Float), connectionAdder: ([Float] -> Float))
+```
+**You can specify functions to make it adjusted to your needs.**
+
+The `graphCalculator` function outputs what the neuron should return with a specified input. The default function in *Neuron.makeBasicNeuron()* is x^2.
+The `connectionAdder` function takes an array of inputs and has only one output. The ouput will be the input for the *graphCalculator* function. The function gets the output of every connection it has to the neurons before. The connectionAdder function used in *Neuron.makeBasicNeuron()* adds every connection. Sometimes, it's more effective to multiply the connections, but you can use it however you want.
+
