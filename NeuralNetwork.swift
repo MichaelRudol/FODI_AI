@@ -23,6 +23,34 @@ class NeuralNetwork{
         requiredNumberOfInputs = numberOfInputs
     }
     
+    func getData() -> [Float]{
+       var currentData = [Float]()
+       for layer in layers {
+           for strength in layer.connectionStrengths {
+               currentData.append(strength)
+           }
+       }
+       return currentData
+   }
+   
+   func earaseNetwork(){
+       for layer in layers {
+           for i in 0...layer.connectionStrengths.count-1{
+               layer.connectionStrengths[i] = 1
+           }
+       }
+   }
+   
+   func updateNetworkWithData(_ data: [Float]){
+       var restData = data
+       for layer in layers {
+           for i in 0...layer.connectionStrengths.count-1 {
+               layer.connectionStrengths[i] = restData.first ?? 1.0
+               restData.removeFirst()
+           }
+       }
+   }
+    
     func fireWithInput(_ input: [Float])throws -> [Float]{
         guard input.count == requiredNumberOfInputs else {throw NeuralNetworkError.valueOfInputsDoesNotMatchRequirement}
         //now handle the neural networks
